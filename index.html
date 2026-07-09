@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jenkins Subaru of Ocala — Accessory & Protection Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --hdr: 110px;
+  --bg:        #dde3eb;
+  --paper:     #fbfcfe;
+  --paper-2:   #edf1f7;
+  --ink:       #0b1524;
+  --ink-soft:  #2b3850;
+  --muted:     #67748c;
+  --gold:      #1f5bbd;
+  --gold-d:    #123e8c;
+  --gold-l:    #7aa3e8;
+  --gold-xl:   #b9d0f5;
+  --gold-pale: rgba(31,91,189,0.10);
+  --hair:      rgba(18,62,140,0.22);
+  --hair-soft: rgba(11,21,36,0.07);
+  --sans:  'Inter', -apple-system, sans-serif;
+  --serif: 'Archivo', 'Inter', Georgia, sans-serif;
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── APP SHELL ── */
+.app-shell { display: flex; flex-direction: column; height: 100vh; }
+
+/* ── HEADER ── */
+.app-header {
+  flex-shrink: 0;
+  background: #101f36;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.32);
+  z-index: 100;
+  position: relative;
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.75rem;
+  height: 62px;
+  border-bottom: 1px solid rgba(122,163,232,0.15);
+}
+.header-brand { display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+.brand-name {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--gold-l);
+  outline: none;
+  cursor: text;
+  line-height: 1;
+}
+.brand-name:focus { color: var(--gold-xl); }
+.brand-sub {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.46em;
+  text-transform: uppercase;
+  color: var(--gold-d);
+}
+
+.header-actions { display: flex; align-items: center; gap: 14px; }
+.running-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  margin-right: 4px;
+}
+.rt-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-d);
+}
+.rt-amount {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--gold-l);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s;
+}
+.rt-amount.has-items { color: #d4b683; }
+
+.icon-btn {
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(122,163,232,0.2);
+  color: var(--gold-l);
+  cursor: pointer;
+  font-size: 17px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s ease;
+  position: relative;
+}
+.icon-btn:hover { background: rgba(184,148,94,0.16); border-color: var(--gold); color: var(--gold-xl); }
+.icon-btn svg { width: 17px; height: 17px; }
+
+/* ── TAB BAR ── */
+.tab-bar {
+  display: flex;
+  align-items: stretch;
+  height: 48px;
+  padding: 0 1.75rem;
+  gap: 0;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 20px;
+  background: transparent;
+  border: none;
+  color: rgba(122,163,232,0.45);
+  cursor: pointer;
+  position: relative;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+.tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.22s ease;
+}
+.tab:hover { color: rgba(122,163,232,0.75); }
+.tab.active { color: var(--gold-l); }
+.tab.active::after { transform: scaleX(1); }
+
+.tab-num {
+  width: 20px; height: 20px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.tab.active .tab-num {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+}
+.tab.done .tab-num {
+  background: transparent;
+  border-color: var(--gold-d);
+  color: var(--gold-d);
+}
+.tab.done .tab-num::before { content: '✓'; font-size: 10px; }
+.tab.done .tab-num span { display: none; }
+.tab-label { letter-spacing: 0.22em; }
+
+.tab-arrow {
+  color: rgba(122,163,232,0.2);
+  font-size: 10px;
+  padding: 0 4px;
+  align-self: center;
+}
+
+/* ── MAIN ── */
+.app-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── PANELS ── */
+.panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(16px);
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+.panel.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+.panel.exit {
+  opacity: 0;
+  transform: translateX(-16px);
+}
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  padding: 2rem 2.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-xl) transparent;
+}
+.panel-body::-webkit-scrollbar { width: 5px; }
+.panel-body::-webkit-scrollbar-thumb { background: var(--gold-xl); }
+
+.panel-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 2.25rem;
+  background: var(--paper);
+  border-top: 1px solid var(--hair);
+  gap: 1rem;
+}
+.panel-footer-center {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Nav buttons */
+.nav-btn {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  padding: 13px 32px;
+  border: 1px solid var(--hair);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-btn:hover { border-color: var(--gold-d); color: var(--gold-d); background: var(--gold-pale); }
+.nav-btn.primary {
+  background: linear-gradient(135deg, #101f36 0%, #2a2218 100%);
+  border-color: var(--gold-d);
+  color: var(--gold-l);
+}
+.nav-btn.primary:hover { background: linear-gradient(135deg, var(--gold-d) 0%, var(--gold) 100%); color: #fff; border-color: var(--gold-d); }
+.nav-btn:disabled { opacity: 0.35; cursor: default; }
+.nav-btn:disabled:hover { background: transparent; border-color: var(--hair); color: var(--muted); }
+
+/* ═══════════════════════════════════════
+   PANEL 1 — DEAL INFO
+═══════════════════════════════════════ */
+#panel-deal .panel-body { background: var(--bg); }
+
+.deal-card {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  padding: 2.5rem 2.5rem;
+  max-width: 780px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 4px 32px -8px rgba(60,42,18,0.16);
+}
+.deal-card::before {
+  content: '';
+  position: absolute; inset: 7px;
+  border: 1px solid rgba(184,148,94,0.18);
+  pointer-events: none;
+}
+
+.deal-card-title {
+  font-family: var(--sans);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.48em;
+  text-transform: uppercase;
+  color: var(--gold-d);
+  margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.deal-card-title::before { content: '◆'; color: var(--gold); font-size: 8px; }
+.deal-card-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold) 0%, var(--gold-pale) 100%); }
+
+.deal-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem 2.5rem;
+}
+.field-group { display: flex; flex-direction: column; gap: 10px; }
+.field-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold-d);
+}
+.field-group input, .field-group select {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 400;
+  font-style: italic;
+  padding: 5px 0 8px;
+  border: none;
+  border-bottom: 1px solid var(--hair);
+  background: transparent;
+  color: var(--ink);
+  width: 100%;
+  appearance: none;
+  transition: border-color 0.2s;
+}
+.field-group input::placeholder { color: var(--muted); opacity: 0.5; }
+.field-group input:focus, .field-group select:focus { outline: none; border-bottom-color: var(--gold-d); }
+.field-group select option { font-family: var(--sans); font-style: normal; font-size: 14px; }
+
+/* ═══════════════════════════════════════
+   PANEL 2 — PRODUCTS
+═══════════════════════════════════════ */
+#panel-products .panel-body { background: #ede6d4; padding: 1.25rem 1.5rem; }
+
+/* Category filter bar */
+.model-indicator { margin-left:auto; align-self:center; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-d); background:var(--gold-pale); border:1px solid var(--hair); padding:6px 12px; cursor:pointer; white-space:nowrap; }
+.cat-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.cat-filter-btn {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border: 1px solid var(--hair);
+  background: rgba(253,250,242,0.6);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.cat-filter-btn:hover { border-color: var(--gold-d); color: var(--gold-d); }
+.cat-filter-btn.active {
+  background: linear-gradient(135deg, #101f36 0%, #2a2218 100%);
+  border-color: var(--gold-d);
+  color: var(--gold-l);
+}
+.cat-filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 50%;
+  margin-left: 5px;
+  font-family: var(--sans);
+}
+
+/* Product grid */
+.products-list { display: flex; flex-direction: column; gap: 0; }
+
+.cat-section { margin-bottom: 1rem; }
+.cat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 1rem;
+  margin-bottom: 2px;
+}
+.cat-header.protect-hdr { background: linear-gradient(90deg, #2a1f0d 0%, var(--gold-d) 100%); }
+.cat-header.subaru-hdr { background: linear-gradient(90deg, #101f36 0%, #1c3357 100%); }
+.cat-header-label {
+  font-family: var(--sans);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.46em;
+  text-transform: uppercase;
+  color: var(--gold-l);
+}
+.cat-header-badge {
+  font-family: var(--sans);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7);
+}
+
+/* Product row */
+.product-row {
+  background: var(--paper);
+  border: none;
+  border-bottom: 1px solid var(--hair-soft);
+  padding: 1rem 1.25rem 1rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: background 0.18s ease;
+  position: relative;
+}
+.product-row:last-child { border-bottom: none; }
+.product-row:hover { background: #f9f4e8; }
+.product-row.selected {
+  background: linear-gradient(90deg, rgba(184,148,94,0.10) 0%, rgba(184,148,94,0.04) 100%);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+/* Check */
+.row-check {
+  width: 22px; height: 22px; flex-shrink: 0;
+  border: 1.5px solid var(--hair);
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s ease;
+}
+.product-row.selected .row-check {
+  background: linear-gradient(135deg, var(--gold-l) 0%, var(--gold) 50%, var(--gold-d) 100%);
+  border-color: var(--gold-d);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.4) inset;
+}
+.row-check-mark { display: none; color: #fff; font-size: 12px; font-weight: 700; }
+.product-row.selected .row-check-mark { display: block; }
+
+/* Product info */
+.row-info { flex: 1; min-width: 0; }
+.row-badge {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  margin-bottom: 6px;
+}
+.row-badge.protect   { background: rgba(184,148,94,0.1); color: var(--gold-d); border: 1px solid var(--hair); }
+.row-badge.subaru { background: rgba(19,16,10,0.05); color: var(--ink-soft); border: 1px solid var(--hair); }
+
+.row-name {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 5px;
+}
+.row-desc {
+  font-size: 11.5px;
+  font-weight: 300;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  max-width: 56ch;
+  display: none; /* collapsed by default */
+}
+.row-desc strong { font-weight: 600; color: var(--ink); }
+.product-row.expanded .row-desc { display: block; }
+.row-warranty {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold-d);
+  background: rgba(184,148,94,0.07);
+  border: 1px solid var(--hair);
+  padding: 3px 9px;
+}
+.row-warranty.subaru-tag { color: var(--ink-soft); background: rgba(19,16,10,0.04); }
+
+.row-expand-btn {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-d);
+  background: none; border: none; cursor: pointer;
+  padding: 0; margin-top: 4px;
+  display: inline-block;
+  transition: color 0.15s;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--gold-pale);
+}
+.row-expand-btn:hover { color: var(--gold); }
+
+/* Product pricing */
+.row-pricing {
+  text-align: right;
+  flex-shrink: 0;
+  min-width: 120px;
+}
+.row-price-wrap { display: flex; align-items: baseline; gap: 2px; justify-content: flex-end; margin-bottom: 6px; }
+.row-price-sym { font-family: var(--serif); font-size: 14px; color: var(--gold-d); font-style: italic; }
+.price-input {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  text-align: right;
+  width: 90px;
+  padding: 2px 0;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.15s;
+}
+.price-input:hover { border-bottom-color: var(--hair); }
+.price-input:focus { outline: none; border-bottom-color: var(--gold-d); }
+.row-price-note { font-size: 7.5px; color: var(--muted); letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 8px; }
+
+/* Tier pills */
+.tier-pills { display: flex; gap: 4px; justify-content: flex-end; }
+.tier-pill {
+  font-size: 7.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 4px 0; min-width: 32px;
+  border: 1px solid var(--hair);
+  background: var(--paper-2);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+  font-family: var(--sans);
+}
+.tier-pill:hover { border-color: var(--gold-d); color: var(--gold-d); }
+.tier-pill.active {
+  background: linear-gradient(135deg, var(--gold-l) 0%, var(--gold-d) 100%);
+  border-color: var(--gold-d);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.4) inset;
+}
+
+/* Custom row */
+.custom-row {
+  background: var(--paper);
+  border-bottom: 1px dashed var(--hair);
+  padding: 1rem 1.25rem 1rem 1rem;
+  display: flex; align-items: center; gap: 1rem;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.custom-row:hover { background: #f9f4e8; }
+.custom-row.selected { background: rgba(184,148,94,0.07); box-shadow: inset 3px 0 0 var(--gold); }
+.custom-name-input {
+  font-family: var(--serif); font-size: 19px; font-weight: 500; font-style: italic;
+  background: transparent; border: none; border-bottom: 1px solid var(--hair);
+  color: var(--ink); width: 100%; padding: 2px 0 4px;
+}
+.custom-name-input:focus { outline: none; border-bottom-color: var(--gold-d); }
+.custom-name-input::placeholder { color: var(--muted); opacity: 0.55; }
+.custom-desc-input {
+  font-size: 11.5px; font-weight: 300; background: transparent;
+  border: none; border-bottom: 1px solid var(--hair-soft);
+  color: var(--ink-soft); width: 100%; padding: 3px 0; margin-top: 8px;
+  font-family: var(--sans);
+}
+.custom-desc-input:focus { outline: none; border-bottom-color: var(--ink); }
+.custom-desc-input::placeholder { color: var(--muted); opacity: 0.5; }
+
+/* footer selected summary */
+.footer-selection-info {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.footer-selection-info span { color: var(--gold-d); font-weight: 500; }
+
+/* ═══════════════════════════════════════
+   PANEL 3 — PACKAGES
+═══════════════════════════════════════ */
+#panel-packages .panel-body { background: var(--bg); }
+.packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; max-width: 980px; margin: 0 auto; }
+
+.bundle-col {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex; flex-direction: column;
+}
+.bundle-col.recommended {
+  border-color: var(--gold-d);
+  box-shadow: 0 8px 32px -12px rgba(138,106,62,0.35);
+}
+.bundle-col.recommended::before {
+  content: '✦  Most Popular';
+  position: absolute; top: 0; left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #101f36 0%, #2a2218 100%);
+  color: var(--gold-l);
+  font-family: var(--sans);
+  font-size: 7px; font-weight: 700; letter-spacing: 0.38em; text-transform: uppercase;
+  padding: 5px 16px;
+  border: 1px solid var(--gold-d);
+  white-space: nowrap; z-index: 2;
+}
+.bundle-col.drag-over { border-color: var(--gold-d); background: rgba(184,148,94,0.04); }
+
+.bundle-head {
+  padding: 1.1rem 1.1rem 0.8rem;
+  border-bottom: 1px solid var(--hair);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.bundle-name-text {
+  font-family: var(--serif);
+  font-size: 22px; font-weight: 500; font-style: italic;
+  color: var(--ink); cursor: pointer;
+  border-bottom: 1px solid transparent; transition: border-color 0.15s;
+  flex: 1;
+}
+.bundle-name-text:hover { border-bottom-color: var(--hair); }
+.bundle-name-input {
+  font-family: var(--serif); font-size: 22px; font-weight: 500; font-style: italic;
+  color: var(--ink); background: transparent; border: none;
+  border-bottom: 1px solid var(--gold-d); padding: 1px 0; flex: 1;
+}
+.bundle-name-input:focus { outline: none; }
+.bundle-clear { font-family: var(--sans); font-size: 8px; color: var(--muted); background: none; border: none; cursor: pointer; letter-spacing: 0.2em; text-transform: uppercase; transition: color 0.15s; margin-left: auto; }
+.bundle-clear:hover { color: var(--ink); }
+
+.bundle-tagline {
+  font-family: var(--serif); font-size: 12.5px; font-style: italic; color: var(--muted);
+  background: transparent; border: none; border-bottom: 1px solid transparent;
+  width: 100%; padding: 0.55rem 1.1rem 0; display: block;
+  font-family: var(--serif);
+}
+.bundle-tagline:focus { outline: none; border-bottom-color: var(--gold-pale); }
+.bundle-tagline::placeholder { opacity: 0.5; }
+
+.bundle-items-area {
+  flex: 1; min-height: 100px;
+  padding: 0.65rem;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.bundle-item {
+  background: var(--paper-2); border: 1px solid var(--hair);
+  padding: 8px 28px 8px 10px;
+  position: relative; cursor: move; user-select: none;
+  transition: border-color 0.15s;
+}
+.bundle-item:hover { border-color: var(--gold-d); }
+.bundle-item-name { font-family: var(--serif); font-size: 15px; font-weight: 500; line-height: 1.2; }
+.bundle-item-price { font-size: 8px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-d); margin-top: 2px; }
+.bundle-item-rm {
+  position: absolute; top: 50%; right: 5px; transform: translateY(-50%);
+  width: 20px; height: 20px; border: none; background: transparent;
+  color: var(--muted); cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center; transition: color 0.15s;
+}
+.bundle-item-rm:hover { color: var(--gold-d); }
+.bundle-drop-hint {
+  border: 1px dashed var(--hair);
+  padding: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase;
+  flex: 1; min-height: 70px; transition: all 0.2s;
+}
+.bundle-drop-hint.drag-active { border-color: var(--gold-d); color: var(--gold-d); background: var(--gold-pale); }
+
+.bundle-foot {
+  padding: 0.85rem 1.1rem;
+  border-top: 1px solid var(--hair);
+}
+.bundle-ovr-row {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 0.55rem;
+  font-size: 8px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--muted);
+}
+.bundle-ovr-input {
+  font-family: var(--serif); font-size: 15px; font-weight: 500; font-style: italic;
+  background: transparent; border: none; border-bottom: 1px solid var(--hair);
+  width: 72px; text-align: right; color: var(--ink); padding: 1px 0;
+  font-variant-numeric: tabular-nums;
+}
+.bundle-ovr-input::placeholder { color: var(--muted); opacity: 0.5; }
+.bundle-ovr-input:focus { outline: none; border-bottom-color: var(--gold-d); }
+.bundle-pop-btn {
+  font-size: 8px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted);
+  background: transparent; border: none; cursor: pointer; padding: 0; font-weight: 600;
+  transition: color 0.15s; margin-left: auto;
+}
+.bundle-pop-btn:hover { color: var(--gold-d); }
+.bundle-pop-btn.active { color: var(--gold-d); }
+
+.bundle-summary-rows { display: flex; flex-direction: column; gap: 0; }
+.bsum-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 8.5px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 500;
+  padding: 5px 0; border-bottom: 1px solid var(--hair-soft);
+}
+.bsum-row:last-child { border-bottom: none; }
+.bsum-row span:last-child { font-family: var(--serif); font-size: 16px; letter-spacing: 0; text-transform: none; font-weight: 500; font-style: italic; }
+.bsum-row.savings { color: var(--gold-d); }
+.bsum-row.savings span:last-child { color: var(--gold-d); }
+.bsum-row.total-line { border-top: 1px solid var(--gold); margin-top: 5px; padding-top: 10px; border-bottom: none; font-weight: 700; color: var(--ink); letter-spacing: 0.32em; }
+.bsum-row.total-line span:last-child { font-size: 22px; }
+.bsum-row.monthly-line { color: var(--gold-d); margin-top: 3px; border-bottom: none; }
+.bsum-row.monthly-line span:last-child { color: var(--gold-d); font-size: 16px; }
+.bundle-empty-note { font-family: var(--serif); font-size: 13px; font-style: italic; color: var(--muted); text-align: center; padding: 0.4rem 0; opacity: 0.7; }
+
+/* Totals row under bundles */
+.bundle-totals-bar {
+  max-width: 980px; margin: 1.25rem auto 0;
+  background: var(--paper); border: 1px solid var(--hair);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+}
+.btotal-cell {
+  padding: 1rem; text-align: center;
+  border-right: 1px solid var(--hair);
+}
+.btotal-cell:last-child { border-right: none; }
+.btotal-cell.recommended { background: var(--gold-pale); }
+.btotal-name { font-size: 8px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-d); margin-bottom: 8px; }
+.btotal-price { font-family: var(--serif); font-size: 30px; font-weight: 500; font-style: italic; color: var(--ink); font-variant-numeric: tabular-nums; }
+.btotal-savings { font-size: 7.5px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold-d); font-weight: 600; margin-top: 5px; }
+
+/* ═══════════════════════════════════════
+   PANEL 4 — SUMMARY
+═══════════════════════════════════════ */
+#panel-summary .panel-body { background: var(--bg); }
+
+.summary-wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
+
+.summary-card {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  padding: 2rem 2.25rem;
+  position: relative;
+  box-shadow: 0 4px 24px -8px rgba(60,42,18,0.14);
+}
+.summary-card::before {
+  content: '';
+  position: absolute; inset: 7px;
+  border: 1px solid rgba(184,148,94,0.16);
+  pointer-events: none;
+}
+
+.sum-section-label {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.44em; text-transform: uppercase;
+  color: var(--gold-d);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 1.35rem;
+}
+.sum-section-label::before { content: '◆'; color: var(--gold); font-size: 8px; }
+.sum-section-label::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold) 0%, var(--gold-pale) 100%); }
+
+/* Deal summary header */
+.sum-deal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.sum-deal-field {}
+.sum-deal-field-label { font-size: 7.5px; font-weight: 700; letter-spacing: 0.36em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.sum-deal-field-value { font-family: var(--serif); font-size: 16px; font-weight: 500; font-style: italic; color: var(--ink); }
+
+/* Selected items */
+.sum-items-list { display: flex; flex-direction: column; gap: 0; }
+.sum-item-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hair-soft);
+  gap: 1rem;
+}
+.sum-item-row:last-child { border-bottom: none; }
+.sum-item-name { font-family: var(--serif); font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.2; }
+.sum-item-badge { font-size: 6.5px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); display: block; margin-top: 2px; }
+.sum-item-price { font-family: var(--serif); font-size: 19px; font-weight: 500; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sum-empty { font-family: var(--serif); font-size: 16px; font-style: italic; color: var(--muted); text-align: center; padding: 1.5rem 0; }
+
+/* Totals */
+.sum-totals { display: flex; flex-direction: column; gap: 0; }
+.sum-total-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 9px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--ink-soft); padding: 11px 0; border-bottom: 1px solid var(--hair-soft);
+}
+.sum-total-row span:last-child { font-family: var(--serif); font-size: 19px; color: var(--ink); letter-spacing: 0; text-transform: none; font-weight: 500; font-variant-numeric: tabular-nums; font-style: italic; }
+.sum-total-row.grand {
+  border-top: 1px solid var(--gold); margin-top: 6px; border-bottom: none;
+  padding-top: 14px; font-weight: 700; color: var(--gold-d); letter-spacing: 0.34em;
+}
+.sum-total-row.grand span:last-child { font-size: 32px; color: var(--ink); }
+.sum-total-row.monthly-row { border-bottom: none; color: var(--gold-d); }
+.sum-total-row.monthly-row span:last-child { color: var(--gold-d); font-size: 22px; }
+
+/* Sig pads */
+.sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+.sig-pad-wrap { display: flex; flex-direction: column; gap: 8px; }
+.sig-pad-label { font-size: 8px; font-weight: 700; letter-spacing: 0.36em; text-transform: uppercase; color: var(--gold-d); }
+.sig-canvas-container { position: relative; border-bottom: 1px solid var(--gold-d); background: transparent; overflow: hidden; }
+.sig-canvas { display: block; width: 100%; height: 90px; cursor: crosshair; touch-action: none; }
+.sig-placeholder { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: var(--serif); font-size: 15px; font-style: italic; color: var(--gold-d); pointer-events: none; white-space: nowrap; opacity: 0.35; }
+.sig-clear { font-size: 8px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: pointer; padding: 0; align-self: flex-end; transition: color 0.15s; }
+.sig-clear:hover { color: var(--gold-d); }
+
+.ack-text { font-family: var(--serif); font-size: 17px; font-style: italic; color: var(--ink-soft); line-height: 1.65; font-weight: 400; }
+.disclaimer { font-size: 10px; color: var(--muted); line-height: 1.9; margin-top: 1.5rem; border-top: 1px solid var(--hair); padding-top: 1.25rem; font-style: italic; letter-spacing: 0.04em; }
+
+/* ═══════════════════════════════════════
+   SETTINGS MODAL
+═══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(19,16,10,0.55);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  display: flex; align-items: flex-start; justify-content: flex-end;
+  padding: 16px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.settings-card {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  width: 320px;
+  padding: 1.75rem 1.75rem;
+  position: relative;
+  box-shadow: 0 24px 64px -16px rgba(19,16,10,0.38);
+  transform: translateY(-8px);
+  transition: transform 0.22s ease;
+}
+.modal-overlay.open .settings-card { transform: translateY(0); }
+.settings-title {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.46em; text-transform: uppercase;
+  color: var(--gold-d);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 1.5rem;
+}
+.settings-title::before { content: '◆'; color: var(--gold); font-size: 8px; }
+.settings-title::after { content: ''; flex: 1; height: 1px; background: var(--hair); }
+.modal-close {
+  position: absolute; top: 12px; right: 12px;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 20px; line-height: 1;
+  transition: color 0.15s;
+}
+.modal-close:hover { color: var(--ink); }
+
+.setting-row { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.25rem; }
+.setting-label { font-size: 8px; font-weight: 700; letter-spacing: 0.36em; text-transform: uppercase; color: var(--muted); }
+.setting-input, .setting-select {
+  font-family: var(--serif); font-size: 22px; font-weight: 400; font-style: italic;
+  padding: 4px 0 7px;
+  border: none; border-bottom: 1px solid var(--hair);
+  background: transparent; color: var(--ink); width: 100%; appearance: none;
+  transition: border-color 0.2s;
+}
+.setting-input:focus, .setting-select:focus { outline: none; border-bottom-color: var(--gold-d); }
+.setting-input::placeholder { color: var(--muted); opacity: 0.5; }
+
+/* Cash toggle */
+.cash-toggle-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-top: 1px solid var(--hair);
+  cursor: pointer; user-select: none;
+}
+.cash-toggle-box {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--hair); background: transparent;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all 0.18s ease;
+}
+.cash-toggle-row.active .cash-toggle-box {
+  background: linear-gradient(135deg, var(--gold-l) 0%, var(--gold) 50%, var(--gold-d) 100%);
+  border-color: var(--gold-d);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.4) inset;
+}
+.cash-chk { display: none; color: #fff; font-size: 11px; font-weight: 700; }
+.cash-toggle-row.active .cash-chk { display: block; }
+.cash-toggle-label { font-family: var(--serif); font-size: 17px; font-style: italic; color: var(--ink); }
+
+/* ═══════════════════════════════════════
+   PRINT
+═══════════════════════════════════════ */
+@media print {
+  html, body { height: auto; overflow: visible; }
+  .app-shell { height: auto; display: block; }
+  .app-header { position: static; background: #101f36 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .tab-bar, .icon-btn, .panel-footer, .cat-filter-bar, .row-expand-btn, .bundle-builder-card,
+  .modal-overlay, .sig-clear, .nav-btn { display: none !important; }
+  .app-main { height: auto; overflow: visible; position: static; }
+  .panel { position: static; opacity: 1 !important; pointer-events: auto !important; transform: none !important; display: block !important; }
+  #panel-products .panel-body, #panel-packages .panel-body { display: none !important; }
+  .panel-body { height: auto; overflow: visible; padding: 1rem 1.25rem; }
+  .product-row.selected, .custom-row.selected { background: #eef3fc !important; -webkit-print-color-adjust: exact; box-shadow: inset 3px 0 0 #1f5bbd !important; }
+  .row-desc { display: block !important; }
+  .summary-card { border: 1px solid #1f5bbd; box-shadow: none; }
+  body { background: #fff; color: #000; }
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ══ HEADER ══ -->
+  <header class="app-header">
+    <div class="header-top">
+      <div class="header-brand">
+        <div class="brand-name" contenteditable="true" id="dealership-name">Jenkins Subaru of Ocala</div>
+        <div class="brand-sub">Genuine Subaru Accessories &amp; Protection</div>
+      </div>
+      <div class="header-actions">
+        <div class="running-total">
+          <div class="rt-label">Selected Total</div>
+          <div class="rt-amount" id="header-total">$0</div>
+        </div>
+        <button class="icon-btn" id="settings-btn" title="Finance Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+        <button class="icon-btn" onclick="window.print()" title="Print Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <nav class="tab-bar">
+      <button class="tab active" data-panel="deal"><span class="tab-num"><span>1</span></span><span class="tab-label">Deal Info</span></button>
+      <div class="tab-arrow">›</div>
+      <button class="tab" data-panel="products"><span class="tab-num"><span>2</span></span><span class="tab-label">Products</span></button>
+      <div class="tab-arrow">›</div>
+      <button class="tab" data-panel="packages"><span class="tab-num"><span>3</span></span><span class="tab-label">Packages</span></button>
+      <div class="tab-arrow">›</div>
+      <button class="tab" data-panel="summary"><span class="tab-num"><span>4</span></span><span class="tab-label">Summary</span></button>
+    </nav>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main class="app-main">
+
+    <!-- Panel 1: Deal Info -->
+    <div class="panel active" id="panel-deal">
+      <div class="panel-body">
+        <div class="deal-card">
+          <div class="deal-card-title">Customer &amp; Vehicle Information</div>
+          <div class="deal-fields">
+            <div class="field-group">
+              <div class="field-label">Customer Name</div>
+              <input type="text" id="f-customer" placeholder="Full name">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Vehicle Model</div>
+              <select id="f-model"></select>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Year</div>
+              <input type="text" id="f-year" placeholder="2025 / 2026">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Stock #</div>
+              <input type="text" id="f-stock" placeholder="Stock number">
+            </div>
+            <div class="field-group">
+              <div class="field-label">VIN (Last 8)</div>
+              <input type="text" id="f-vin" placeholder="XXXXXXXX" maxlength="17">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Date</div>
+              <input type="date" id="f-date">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <div></div>
+        <div class="panel-footer-center"></div>
+        <button class="nav-btn primary" onclick="goTo('products')">Select Products &nbsp;›</button>
+      </div>
+    </div>
+
+    <!-- Panel 2: Products -->
+    <div class="panel" id="panel-products">
+      <div class="panel-body">
+        <div class="cat-filter-bar" id="cat-filter-bar">
+          <button class="cat-filter-btn active" data-filter="all">All Products</button>
+          <button class="cat-filter-btn" data-filter="protect">Protection</button>
+          <button class="cat-filter-btn" data-filter="subaru">Subaru Accessories</button>
+          <div class="model-indicator" id="model-indicator" title="Change vehicle model" onclick="goTo('deal')"></div>
+        </div>
+        <div class="products-list" id="products-list"></div>
+      </div>
+      <div class="panel-footer">
+        <button class="nav-btn" onclick="goTo('deal')">‹ &nbsp;Deal Info</button>
+        <div class="footer-selection-info" id="footer-sel-info">No items selected</div>
+        <button class="nav-btn primary" onclick="goTo('packages')">Build Packages &nbsp;›</button>
+      </div>
+    </div>
+
+    <!-- Panel 3: Packages -->
+    <div class="panel" id="panel-packages">
+      <div class="panel-body">
+        <div class="packages-grid" id="packages-grid"></div>
+        <div class="bundle-totals-bar" id="bundle-totals-bar"></div>
+      </div>
+      <div class="panel-footer">
+        <button class="nav-btn" onclick="goTo('products')">‹ &nbsp;Products</button>
+        <div class="panel-footer-center">Drag items between packages or use the tier chips on each product</div>
+        <button class="nav-btn primary" onclick="goTo('summary')">Review &amp; Sign &nbsp;›</button>
+      </div>
+    </div>
+
+    <!-- Panel 4: Summary -->
+    <div class="panel" id="panel-summary">
+      <div class="panel-body">
+        <div class="summary-wrap">
+
+          <!-- Deal info recap -->
+          <div class="summary-card">
+            <div class="sum-section-label">Deal Details</div>
+            <div class="sum-deal-grid" id="sum-deal-grid">
+              <div class="sum-deal-field"><div class="sum-deal-field-label">Customer</div><div class="sum-deal-field-value" id="s-customer">—</div></div>
+              <div class="sum-deal-field"><div class="sum-deal-field-label">Vehicle</div><div class="sum-deal-field-value" id="s-vehicle">—</div></div>
+              <div class="sum-deal-field"><div class="sum-deal-field-label">Stock #</div><div class="sum-deal-field-value" id="s-stock">—</div></div>
+              <div class="sum-deal-field"><div class="sum-deal-field-label">VIN (Last 8)</div><div class="sum-deal-field-value" id="s-vin">—</div></div>
+              <div class="sum-deal-field"><div class="sum-deal-field-label">Date</div><div class="sum-deal-field-value" id="s-date">—</div></div>
+            </div>
+          </div>
+
+          <!-- Selected items -->
+          <div class="summary-card">
+            <div class="sum-section-label">Selected Products</div>
+            <div class="sum-items-list" id="sum-items-list">
+              <div class="sum-empty">No items selected — go to Products to add items.</div>
+            </div>
+          </div>
+
+          <!-- Totals -->
+          <div class="summary-card">
+            <div class="sum-section-label">Pricing Summary</div>
+            <div class="sum-totals">
+              <div class="sum-total-row"><span>Subtotal</span><span id="s-subtotal">$0.00</span></div>
+              <div class="sum-total-row"><span>Sales Tax (<span id="s-tax-pct">7.5</span>%)</span><span id="s-tax">$0.00</span></div>
+              <div class="sum-total-row grand"><span>Total</span><span id="s-total">$0.00</span></div>
+              <div class="sum-total-row monthly-row" id="s-monthly-row"><span>Monthly Payment Est.</span><span id="s-monthly">$0 / mo</span></div>
+            </div>
+          </div>
+
+          <!-- Acknowledgment & Sig -->
+          <div class="summary-card">
+            <div class="sum-section-label">Customer Acknowledgment</div>
+            <p class="ack-text">I have been presented with the above accessory and protection products by the dealership. The items selected above have been agreed to at the prices listed. I understand all products are optional and my selections are reflected by my signature below.</p>
+            <div class="sig-grid">
+              <div class="sig-pad-wrap">
+                <div class="sig-pad-label">Customer Signature</div>
+                <div class="sig-canvas-container">
+                  <canvas class="sig-canvas" id="sig-customer"></canvas>
+                  <div class="sig-placeholder" id="ph-customer">Sign here</div>
+                </div>
+                <button class="sig-clear" onclick="clearSig('sig-customer','ph-customer')">Clear</button>
+              </div>
+              <div class="sig-pad-wrap">
+                <div class="sig-pad-label">Sales Associate</div>
+                <div class="sig-canvas-container">
+                  <canvas class="sig-canvas" id="sig-associate"></canvas>
+                  <div class="sig-placeholder" id="ph-associate">Sign here</div>
+                </div>
+                <button class="sig-clear" onclick="clearSig('sig-associate','ph-associate')">Clear</button>
+              </div>
+            </div>
+            <div class="disclaimer">
+              All prices shown are pre-tax. Sales tax is applied and reflected in the total above.
+              Monthly payment estimates are based on the finance term and rate set in Finance Settings and are for illustrative purposes only.
+              Protection products carry the warranty stated at time of purchase. Genuine Subaru accessories installed at time of vehicle purchase are covered by the 3-year/36,000-mile limited warranty; accessories installed afterward carry a 1-year unlimited-mileage warranty.
+              Products and prices are subject to change without notice.
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="panel-footer">
+        <button class="nav-btn" onclick="goTo('packages')">‹ &nbsp;Packages</button>
+        <div class="panel-footer-center"></div>
+        <button class="nav-btn primary" onclick="window.print()">Print Menu &nbsp;⎙</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ SETTINGS MODAL ══ -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="settings-card">
+    <button class="modal-close" id="settings-close">×</button>
+    <div class="settings-title">Finance Settings</div>
+    <div class="setting-row">
+      <div class="setting-label">Tax Rate (%)</div>
+      <input type="number" class="setting-input" id="tax-input" value="7.5" step="0.1" min="0" max="20">
+    </div>
+    <div class="setting-row" id="finance-fields">
+      <div class="setting-label">Finance Term</div>
+      <select class="setting-select" id="term-select">
+        <option value="24">24 months</option>
+        <option value="36">36 months</option>
+        <option value="48">48 months</option>
+        <option value="60" selected>60 months</option>
+        <option value="72">72 months</option>
+        <option value="84">84 months</option>
+      </select>
+    </div>
+    <div class="setting-row" id="rate-field">
+      <div class="setting-label">Interest Rate (%)</div>
+      <input type="number" class="setting-input" id="rate-input" value="6.9" step="0.1" min="0" max="30">
+    </div>
+    <div class="cash-toggle-row" id="cash-toggle">
+      <div class="cash-toggle-box"><div class="cash-chk">✓</div></div>
+      <div class="cash-toggle-label">Cash Deal — hide monthly</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   PRODUCT DATA
+══════════════════════════════════════════ */
+/* ── Protection (store-wide, unbranded) ── */
+const PROTECTION = [
+  { id:'ceramic', category:'protect', name:'Ceramic Paint Coating',
+    desc:'<strong>Professional-grade nano-ceramic paint coating</strong> — bonds to the paint at a molecular level to create an ultra-hydrophobic, self-cleaning finish with deep gloss. Guards against UV fade, chemical stains, bird etchings, love bugs, and wash marring. Applied by certified technicians.',
+    warranty:'Written Protection Warranty Included', price:999 },
+  { id:'tint', category:'protect', name:'Ceramic Window Tint',
+    desc:'<strong>High-performance ceramic window film</strong> — superior heat rejection for the Florida sun and blocks up to 99% of UV rays. Non-metallized construction with zero interference with GPS, cellular, or EyeSight® driver-assist systems. Fade-resistant, professionally installed in legal shades.',
+    warranty:'Lifetime Film Warranty', price:499 },
+];
+
+/* ── Genuine Subaru accessory library (shared copy + default MSRP-based price) ── */
+const W = 'Genuine Subaru Accessory';
+const TH = 'Genuine Subaru Lifestyle Accessory by Thule® — Limited Lifetime Warranty';
+const ACC = {
+  /* Interior protection */
+  floorliners:{ price:169, name:'All-Weather Floor Liners', warranty:W, desc:'<strong>Custom-molded high-wall floor liners</strong> — engineered from factory CAD data to precisely fit the footwell. Deep walls trap spills, sand, mud, and rain before they reach the carpet. Resists warping, fading, and tearing.' },
+  cargotray:{ price:149, name:'Cargo Tray', warranty:W, desc:'<strong>Precision-fit cargo area liner</strong> — raised edges contain spills, wet gear, and beach sand. Protects the factory cargo carpet from everything your adventures bring home. Wipes clean in seconds.' },
+  trunktray:{ price:139, name:'Trunk Cargo Tray', warranty:W, desc:'<strong>Precision-fit trunk liner</strong> — protects the trunk from stains and dirt while reducing cargo shifting on the drive. Removes and rinses clean in seconds.' },
+  seatbackprot:{ price:149, name:'Rear Seatback Protector', warranty:W, desc:'<strong>Protects the rear seatbacks when folded flat</strong> — shields upholstery from sliding cargo, bikes, and lumber runs. Texture-matched to the Cargo Tray for a seamless factory look.' },
+  sidewallprot:{ price:119, name:'Cargo Sidewall Protector', warranty:W, desc:'<strong>Extends protection to the cargo wheel-well panels</strong> — set of two, texture-matched to the Cargo Tray and Rear Seatback Protector for a seamless appearance.' },
+  seatcoverfront:{ price:209, name:'Seat Cover — Front', warranty:W, desc:'<strong>Custom-fitted front seat protection</strong> — shields seats from spills, stains, dust, and dirt with full seatback coverage. Water-resistant and machine-washable.' },
+  seatcover:{ price:279, name:'Seat Cover — Rear', warranty:W, desc:'<strong>Tailored rear seat protection</strong> — a snug custom fit for pets, kids, and life on the go, including full headrest coverage. LATCH-accessible, water-resistant, and machine-washable.' },
+  /* Exterior protection */
+  splashguards:{ price:199, name:'Splash Guards', warranty:W, desc:'<strong>Engineered four-piece splash guard set</strong> — protects the paint finish from stones and road grime. Designed with the vehicle to reduce wind noise and drag. Professionally installed. Cannot be combined with Mud Flaps.' },
+  mudflaps:{ price:229, name:'Mud Flaps', warranty:W, desc:'<strong>Heavy-duty logo mud flaps</strong> — a full protective barrier between the tires and wheel wells. Minimizes spray while protecting the undercarriage from rust and corrosion. Cannot be combined with Splash Guards.' },
+  deflectors:{ price:299, name:'Side Window Deflectors', warranty:W, desc:'<strong>Keep weather out and fresh air in</strong> — crack the windows in a Florida downpour without getting wet. Engineered with the vehicle, tested for water intrusion, wind noise, and vibration.' },
+  sidemolding:{ price:329, name:'Body Side Molding', warranty:W, desc:'<strong>Color-matched door protection</strong> — coordinates with the vehicle\'s styling while defending doors from parking-lot dings. Painted to match your exact factory color. Professionally installed.' },
+  dooredge:{ price:179, name:'Door Edge Guards', warranty:W, desc:'<strong>Color-matched stainless steel edge guards</strong> — protect door edges from chips and dings while blending seamlessly into the door design.' },
+  bumpercover:{ price:149, name:'Rear Bumper Cover', warranty:W, desc:'<strong>Protects the bumper load surface</strong> — guards the upper bumper from scratches and scuffs from loading cargo, coolers, bikes, and dogs.' },
+  wheellocks:{ price:89, name:'Alloy Wheel Locks', warranty:W, desc:'<strong>Anti-theft wheel lock set</strong> — four bright chrome locking lug nuts with a unique key pattern deter theft of wheels and tires.' },
+  underguard:{ price:449, name:'Engine Under Guard', warranty:W, desc:'<strong>Lightweight aluminum underbody armor</strong> — corrosion-resistant aluminum protection from road debris, engineered to keep easy access to the oil drain plug. Professionally installed.' },
+  runningboards:{ price:899, name:'Running Boards', warranty:W, desc:'<strong>Integrated stepping surface</strong> — low-profile design with slip-resistant pads for easier entry, exit, and roof access. Durable textured black powder-coat finish. Professionally installed.' },
+  battcharger:{ price:149, name:'Battery Charger & Maintainer', warranty:W, desc:'<strong>Custom-engineered for Subaru batteries</strong> — fully automatic charging with reconditioning mode for deeply discharged batteries. Keeps a lightly-driven Subaru ready to go.' },
+  /* Cargo & convenience */
+  cargonet:{ price:79, name:'Cargo Net', warranty:W, desc:'<strong>Dual-position cargo net</strong> — anchor it upright to stop cargo shifting front-to-back, or lay it across the floor to keep gear from rolling around.' },
+  trunknet:{ price:69, name:'Trunk Cargo Net', warranty:W, desc:'<strong>Keeps trunk cargo in place</strong> — secures groceries and loose items so they don\'t slide on corners. Attaches to factory anchor points.' },
+  cargocover:{ price:269, name:'Cargo Cover', warranty:W, desc:'<strong>Retractable cargo compartment cover</strong> — keeps items in the back out of sight with maximum-coverage design. Stows away when not needed.' },
+  cargoseparator:{ price:269, name:'Cargo Separator', warranty:W, desc:'<strong>Partition between the 2nd row and cargo area</strong> — mesh design preserves rear visibility while keeping cargo out of the passenger compartment.' },
+  cargoorganizer:{ price:79, name:'Cargo Organizer', warranty:W, desc:'<strong>Collapsible cargo organizer</strong> — neatly transports outdoor gear or up to four grocery bags, then collapses flat for storage.' },
+  cargoshelf:{ price:139, name:'Cargo Shelf', warranty:W, desc:'<strong>Two-level cargo storage</strong> — carry lighter items up top and heavier bags below. Includes utility bars and hooks; folds flat when not in use.' },
+  utilityhooks:{ price:59, name:'Utility Hook Set', warranty:W, desc:'<strong>Cargo area hooks for gear</strong> — hang backpacks, hiking shoes, or grocery bags. Carabiner-compatible design, set of two.' },
+  molle:{ price:279, name:'MOLLE Panel', warranty:W, desc:'<strong>Modular gear organization</strong> — powder-coated steel panel secures tools and equipment in the cargo area, reducing projectile risk in a collision. Strap, bolt, clip, or zip-tie anything.' },
+  mollestraps:{ price:49, name:'MOLLE Strap Set', warranty:W, desc:'<strong>Six heavy-duty buckle straps</strong> — Subaru-embossed nylon webbing straps to secure tools and gear to the MOLLE Panel.' },
+  mollepouches:{ price:129, name:'MOLLE Pouches (Set of 3)', warranty:W, desc:'<strong>Modular storage pouches</strong> — small, medium, and large pouches organize supplies and gear on the MOLLE Panel. Easy to add, remove, and rearrange.' },
+  sunshade:{ price:119, name:'Sunshade — Windshield', warranty:W, desc:'<strong>Triple-layer custom-cut sunshade</strong> — reduces cabin temperature by up to 40 degrees in the Florida sun. Includes storage bag.' },
+  sunshade2nd:{ price:139, name:'Sunshade — 2nd Row', warranty:W, desc:'<strong>Rear passenger sun protection</strong> — dulls glare, reduces interior temperature, and blocks UV-A/B for second-row comfort. Works with all safety features.' },
+  moonroofdef:{ price:149, name:'Moonroof Air Deflector', warranty:W, desc:'<strong>Reduces wind noise and sun glare</strong> — lets you enjoy the open moonroof at highway speed.' },
+  consoletray:{ price:59, name:'Center Console Tray', warranty:W, desc:'<strong>Extra console organization</strong> — color-coordinated tray fits into the top of the center console for phones, sunglasses, and small items.' },
+  phoneholder:{ price:49, name:'Phone Holder — Cup Holder Mounted', warranty:W, desc:'<strong>Secure phone mounting</strong> — holds your phone in portrait or landscape at adjustable angles, with a tray for small items. Drops into the console cup holder.' },
+  /* Electronics & comfort */
+  remotestart:{ price:599, name:'Remote Engine Starter', warranty:W, desc:'<strong>Start your Subaru from up to 400 feet away</strong> — the A/C is already running before you leave the house. Works with the keyless system with no subscription required.' },
+  usbcables:{ price:79, name:'USB Charging Cable Set', warranty:W, desc:'<strong>Four premium 3-ft cables in Subaru blue</strong> — MFi-certified, covering USB-A/USB-C/Lightning in a zippered Subaru case with cable ties.' },
+  wirelesscharger:{ price:329, name:'Wireless Charger Kit', warranty:W, desc:'<strong>Qi-certified cordless phone charging</strong> — intelligent charging profiles, temperature control, and short-circuit safeguards. Professionally installed.' },
+  /* Roof & towing lifestyle */
+  crossbars:{ price:349, name:'Crossbar Set — Aero', warranty:W, desc:'<strong>Aerodynamic crossbar system</strong> — the foundation for bike, kayak, ski, and cargo carriers. Designed and validated by Subaru to minimize wind noise. Tool-free installation.' },
+  crossbarsext:{ price:449, name:'Thule® Crossbar Set — Aero Extended', warranty:TH, desc:'<strong>Large-surface crossbar system</strong> — mounts multiple accessories at once and supports the Thule® Roof Top Tent. Aerodynamic profile minimizes wind noise.' },
+  rooftent:{ price:2699, name:'Thule® Roof Top Tent', warranty:TH, desc:'<strong>Turn your Subaru into base camp</strong> — sleeps 2-3 with a dual-layer foam mattress, panoramic skylights, and 3-minute setup. Includes telescoping ladder and travel cover. Requires Crossbar Set — Aero Extended.' },
+  awning:{ price:949, name:'Thule® Awning — Roof Mounted', warranty:TH, desc:'<strong>Instant shelter from sun and rain</strong> — 6.2 ft awning projects 8 ft with one-person setup. Stows in a sleek aluminum case on the crossbars. Requires crossbar set.' },
+  roofbasket:{ price:599, name:'Thule® Heavy-Duty Roof Cargo Basket', warranty:TH, desc:'<strong>Open storage for gear of all shapes</strong> — low-profile basket with custom wind fairing and stretch net. Requires crossbar set.' },
+  cargocarrier13:{ price:699, name:'Thule® Cargo Carrier (13 cu ft)', warranty:TH, desc:'<strong>Lockable rooftop storage</strong> — 13 cubic feet with dual-side opening and tool-free Quick-Grip™ mounting. Requires crossbar set.' },
+  cargocarrier17:{ price:799, name:'Thule® Cargo Carrier — Extended (17 cu ft)', warranty:TH, desc:'<strong>Maximum rooftop storage</strong> — 17 cubic feet, dual-side opening, low-profile aerodynamic design. Requires crossbar set.' },
+  kayak:{ price:279, name:'Thule® Kayak Carrier', warranty:TH, desc:'<strong>Carries up to two kayaks</strong> — dual-position mount with tie-downs and locks included. Folds flat when not in use. Requires crossbar set.' },
+  paddleboard:{ price:279, name:'Thule® Paddleboard Carrier', warranty:TH, desc:'<strong>Carries up to two boards</strong> — telescoping design fits boards up to 34" wide with weather-resistant padding and locking. Requires crossbar set.' },
+  ski:{ price:299, name:'Thule® Ski & Snowboard Carrier', warranty:TH, desc:'<strong>Holds six pairs of skis or four boards</strong> — ultra-soft rubber arms grip without scratching. Four locks included. Requires crossbar set.' },
+  bikefork:{ price:279, name:'Thule® Bike Carrier — Fork Mounted', warranty:TH, desc:'<strong>Rooftop bike transport</strong> — corrosion-resistant aluminum tray with ratcheting wheel strap and lock. Requires crossbar set.' },
+  bikeroof:{ price:299, name:'Thule® Bike Carrier — Roof Mounted', warranty:TH, desc:'<strong>Frame-hold rooftop carrier</strong> — self-adjusting jaws wrap the downtube for a precise hold. Fits most 20"-29" bikes. Requires crossbar set.' },
+  bikehitch2:{ price:549, name:'Thule® Bike Carrier — Hitch Mounted (2 bikes)', warranty:TH, desc:'<strong>Lightweight aluminum hitch rack</strong> — nearly half the weight of most hitch racks, 70 lbs. capacity, integrated locks. Requires Trailer Hitch.' },
+  bikehitch4:{ price:599, name:'Thule® Bike Carrier — Hitch Mounted (4 bikes)', warranty:TH, desc:'<strong>Family bike hauler</strong> — durable steel construction carries four bikes, 150 lbs. total, with anti-sway cages and locks. Requires Trailer Hitch.' },
+  bikeplatform:{ price:699, name:'Thule® Bike Carrier — Hitch Platform (2 bikes)', warranty:TH, desc:'<strong>Platform-style rack for e-bikes and fat bikes</strong> — fits tires up to 5" wide, 100 lbs. capacity, tilts down for rear-gate access. Requires Trailer Hitch.' },
+  hitch:{ price:1095, name:'Trailer Hitch Package', warranty:W, desc:'<strong>Factory-engineered towing package</strong> — 2-inch receiver crash-tested to the same standards as the vehicle itself. Includes hitch, wiring harness, and ball mount, professionally installed. Tow rating varies by model and trim.' },
+  /* Pet-friendly */
+  petliner:{ price:219, name:'Pet-Friendly Padded Cargo Liner', warranty:W, desc:'<strong>A comfortable resting area for your co-pilot</strong> — thick padding protects the cargo area and seatbacks from hair, nails, and muddy paws. Foldout bumper protector included. Machine-washable.' },
+  petkennelM:{ price:329, name:'Collapsible Pet Kennel — Medium', warranty:'Manufactured by Thule® — 2-Year Warranty', desc:'<strong>Travel-ready pet kennel</strong> — lightweight steel-frame kennel with three zippered openings. Secures in the cargo area with adjustable straps; folds flat with carrying handle.' },
+  petkennelL:{ price:379, name:'Collapsible Pet Kennel — Large', warranty:'Manufactured by Thule® — 2-Year Warranty', desc:'<strong>Travel-ready pet kennel for larger dogs</strong> — 36" steel-frame kennel with three zippered openings and cargo-area strap mounting. Folds flat for storage.' },
+  petcarrierbed:{ price:209, name:'Pet Carrier & Mobile Pet Bed', warranty:'Manufactured by Sleepypod® — Crash-Tested & CPS Certified', desc:'<strong>Carrier, car seat, and bed in one</strong> — crash-tested and certified by the Center for Pet Safety for pets up to 15 lbs. Plush machine-washable bedding in Subaru blue.' },
+  petharness:{ price:119, name:'Pet Safety Harness', warranty:'Manufactured by Sleepypod® — Crash-Tested & CPS Certified', desc:'<strong>Buckle up your dog</strong> — crash-tested at child-seat standards for dogs 18-90 lbs. Padded vest with seatbelt-grade straps and reflective strips. Sized to fit.' },
+  petramp:{ price:289, name:'Pet Ramp', warranty:W, desc:'<strong>Easy in, easy out</strong> — telescoping aluminum ramp with non-slip surface supports pets up to 220 lbs. Ideal for senior dogs. Folds flat for storage.' },
+  petbowl:{ price:39, name:'Pet Travel Bowl', warranty:W, desc:'<strong>Food and water on the go</strong> — freeze the base to keep water cool; the lid doubles as a second bowl. FDA food-grade silicone in Subaru blue.' },
+  petseatext:{ price:249, name:'Organizer & Pet Rear Seat Extender', warranty:W, desc:'<strong>More room for your dog</strong> — fills the gap between front and rear seats to extend the resting area (supports up to 200 lbs.) with organized storage inside. Two required for full-width coverage.' },
+  petseatprot:{ price:169, name:'Pet-Friendly Padded Seat Protector', warranty:W, desc:'<strong>Quilted back-seat protection</strong> — heavy-duty pad and tailored seatback shield the seat from muddy paws and hair. LATCH-accessible and machine-washable.' },
+  petdoorprot:{ price:129, name:'Pet Rear Door Protector', warranty:W, desc:'<strong>Saves your door panels</strong> — set of two contoured shields protect against scratches, nail punctures, scuffs, and drool. Clip-in installation.' },
+  consolelid:{ price:99, name:'Console Lid Protector', warranty:W, desc:'<strong>Protects the console armrest</strong> — padded cover guards the lid from nail scratches and punctures while adding armrest comfort. Non-slip bottom.' },
+  bumpermat:{ price:79, name:'Rear Bumper Protector Mat', warranty:W, desc:'<strong>Protects the bumper during loading</strong> — folds out over the rear bumper when pets or cargo go in and out; folds flat under the cargo tray when not in use.' },
+  /* Style & lighting */
+  sillplates:{ price:549, name:'Side Sill Plates — Illuminated', warranty:W, desc:'<strong>LED-illuminated door sill protection</strong> — a bright white logo accent greets you every time a door opens, while protecting the doorframe at the highest-traffic entry points. Professionally installed.' },
+  frontsills:{ price:299, name:'Side Sill Plates — Front', warranty:W, desc:'<strong>Finished-metal sill protection</strong> — dresses up the front door sills while protecting them from scuffs and scratches.' },
+  footwell:{ price:199, name:'Footwell Illumination Kit', warranty:W, desc:'<strong>Upgrade the interior ambiance</strong> — LED lighting illuminates the front floor with a soft glow that brightens and dims with the interior lighting. Professionally installed.' },
+  ledupgrade:{ price:99, name:'Interior LED Upgrade', warranty:W, desc:'<strong>Brighter, whiter cabin lighting</strong> — upgrades the visor lights to crisp LED, color-tuned to Subaru standards. Professionally installed.' },
+  doorprojector:{ price:179, name:'Door Projector Lights', warranty:W, desc:'<strong>A signature welcome</strong> — projects the vehicle silhouette onto the ground when the front doors open. Professionally installed.' },
+  reargatelight:{ price:249, name:'Rear Gate Light', warranty:W, desc:'<strong>Bright LED cargo lighting</strong> — illuminates the cargo area automatically when the hatch opens. Integrated factory-style installation.' },
+  auxgatelight:{ price:149, name:'Auxiliary Rear Gate Light', warranty:W, desc:'<strong>Extra light for night loading</strong> — additional LED source on the rear gate, on automatically with the hatch. Includes off switch. Professionally installed.' },
+  accentliners:{ price:199, name:'Interior Accent Liners', warranty:W, desc:'<strong>Color accents throughout the cabin</strong> — precision-fit kit lines door pulls, pockets, cup holders, and the console tray while protecting them from grime. Easy to remove for cleaning.' },
+  grille:{ price:349, name:'Accessory Grille', warranty:W, desc:'<strong>A rugged front-end upgrade</strong> — express your adventurous side with a bolder factory-designed grille. Professionally installed.' },
+  /* Safety kits */
+  emergkit:{ price:89, name:'Roadside Emergency Kit', warranty:W, desc:'<strong>Essentials for the unexpected</strong> — jumper cables, reflective triangle, first aid supplies, and more in a padded Subaru-embroidered case.' },
+  firstaid:{ price:39, name:'First Aid Kit', warranty:W, desc:'<strong>Compact glovebox-ready first aid kit</strong> — bandages, gauze, tape, scissors, tweezers, emergency blanket, and guide in a zippered Subaru-branded bag.' },
+  severeweather:{ price:129, name:'Severe Weather Companion', warranty:W, desc:'<strong>Be ready for hurricane season</strong> — warmth, light, water, first aid, and signaling essentials in a padded embroidered carrying case.' },
+};
+
+/* ── Reusable groups ── */
+const G_ROOF   = ['crossbars','crossbarsext','roofbasket','cargocarrier13','cargocarrier17','kayak','paddleboard','ski','bikefork','bikeroof'];
+const G_CAMP   = ['rooftent','awning'];
+const G_HITCHB = ['hitch','bikehitch2','bikehitch4','bikeplatform'];
+const G_PET    = ['petliner','petkennelM','petkennelL','petcarrierbed','petharness','petramp','petbowl','petseatext','petseatprot','petdoorprot','consolelid','bumpermat'];
+const G_PETCAR = ['petcarrierbed','petharness','petbowl','petseatprot','petdoorprot','consolelid'];
+const G_MOLLE  = ['molle','mollestraps','mollepouches'];
+const G_ELEC   = ['usbcables','wirelesscharger','battcharger'];
+const G_KITS   = ['emergkit','firstaid','severeweather'];
+
+/* ── Per-model catalogs. Entries: 'id' (library default price) or ['id', price, {overrides}].
+   Assembled from the official Genuine Subaru Accessories catalog per model.
+   Every price is editable on screen — verify against the store's parts system. ── */
+const MODEL_DATA = {
+  'Outback': [
+    ['floorliners',169],'cargotray','seatbackprot','sidewallprot','seatcoverfront','seatcover',
+    'splashguards','mudflaps',['deflectors',299],'sidemolding','dooredge','bumpercover','wheellocks',
+    ['underguard',449],'runningboards','cargonet','cargoseparator','cargoorganizer','utilityhooks',
+    ...G_MOLLE,'sunshade','sunshade2nd','moonroofdef','remotestart',...G_ROOF,...G_CAMP,...G_HITCHB,...G_PET,
+    'sillplates','frontsills','footwell','ledupgrade','doorprojector','reargatelight','auxgatelight','accentliners',
+    ...G_ELEC,...G_KITS,
+  ],
+  'Outback Wilderness': [
+    ['floorliners',169],'seatbackprot','sidewallprot','seatcoverfront','seatcover',
+    'splashguards','mudflaps',['deflectors',299],'sidemolding','dooredge','bumpercover','wheellocks',
+    ['underguard',449],'cargonet','cargoseparator','cargoorganizer','utilityhooks',
+    ...G_MOLLE,'sunshade','sunshade2nd','moonroofdef','remotestart',['crossbarsext',449,{name:'Thule® Crossbar Set — Aero Extended (Black)'}],'roofbasket','cargocarrier13','cargocarrier17','kayak','paddleboard','ski','bikefork','bikeroof',
+    ...G_CAMP,...G_HITCHB,...G_PET,
+    'frontsills','footwell','ledupgrade','doorprojector','auxgatelight',['accentliners',199,{name:'Interior Accent Liners (Gold)'}],
+    ...G_ELEC,...G_KITS,
+  ],
+  'Forester': [
+    ['floorliners',169],['cargotray',149],'seatbackprot','sidewallprot','seatcoverfront','seatcover',
+    'splashguards','mudflaps',['deflectors',269],'sidemolding','dooredge','bumpercover','wheellocks',
+    ['underguard',449],'cargonet','cargoseparator','cargoorganizer','cargoshelf','utilityhooks',
+    'sunshade','sunshade2nd','moonroofdef','consoletray','phoneholder','remotestart',...G_ROOF,...G_CAMP,['hitch',995],'bikehitch2','bikehitch4','bikeplatform',...G_PET,
+    'sillplates','frontsills','footwell','ledupgrade','doorprojector','accentliners','grille',
+    ...G_ELEC,...G_KITS,
+  ],
+  'Forester Wilderness': [
+    ['floorliners',169],'seatbackprot','sidewallprot','seatcoverfront','seatcover',
+    'splashguards','mudflaps',['deflectors',269],'dooredge','bumpercover','wheellocks',
+    ['underguard',449],'cargonet','cargoseparator','cargoorganizer','cargoshelf','utilityhooks',
+    'sunshade','sunshade2nd','consoletray','phoneholder','remotestart',['crossbarsext',449,{name:'Thule® Crossbar Set — Aero Extended (Black)'}],'roofbasket','cargocarrier13','cargocarrier17','kayak','paddleboard','ski','bikefork','bikeroof',
+    ...G_CAMP,['hitch',1195],'bikehitch2','bikehitch4','bikeplatform',...G_PET,
+    'frontsills','footwell','ledupgrade','doorprojector',['accentliners',199,{name:'Interior Accent Liners (Gold)'}],
+    ...G_ELEC,...G_KITS,
+  ],
+  'Crosstrek': [
+    ['floorliners',149],['cargotray',129],['seatbackprot',139],'seatcoverfront','seatcover',
+    ['splashguards',189],['mudflaps',219],['deflectors',239],['sidemolding',299],'dooredge',['bumpercover',139],'wheellocks',
+    'cargonet','cargoseparator','cargoorganizer','sunshade','sunshade2nd','moonroofdef','remotestart',['crossbars',329],'crossbarsext','roofbasket','cargocarrier13','kayak','paddleboard','ski','bikefork','bikeroof',
+    ...G_CAMP,['hitch',945],'bikehitch2','bikeplatform',...G_PET,
+    ['sillplates',499],'frontsills','footwell','ledupgrade','doorprojector','accentliners',
+    ...G_ELEC,...G_KITS,
+  ],
+  'Crosstrek Wilderness': [
+    ['floorliners',149],['cargotray',129],['seatbackprot',139],'seatcoverfront','seatcover',
+    ['splashguards',189],['mudflaps',219],['deflectors',239],'dooredge',['bumpercover',139],'wheellocks',
+    ['underguard',429],'cargonet','cargoseparator','cargoorganizer','sunshade','sunshade2nd','remotestart',['crossbarsext',449,{name:'Thule® Crossbar Set — Aero Extended (Black)'}],'roofbasket','cargocarrier13','kayak','paddleboard','ski','bikefork','bikeroof',
+    ...G_CAMP,['hitch',995],'bikehitch2','bikeplatform',...G_PET,
+    'frontsills','footwell','ledupgrade','doorprojector',
+    ...G_ELEC,...G_KITS,
+  ],
+  'Ascent': [
+    ['floorliners',189],['cargotray',169],['seatbackprot',159],'seatcoverfront','seatcover',
+    'splashguards','mudflaps',['deflectors',299],['sidemolding',349],['dooredge',189],'bumpercover','wheellocks',
+    'cargonet','cargoorganizer','utilityhooks','sunshade','sunshade2nd','moonroofdef','remotestart',['crossbars',369],'crossbarsext','roofbasket','cargocarrier13','cargocarrier17','kayak','paddleboard','ski','bikefork','bikeroof',
+    ...G_CAMP,['hitch',1195],'bikehitch2','bikehitch4','bikeplatform',...G_PET,
+    'sillplates','footwell','ledupgrade','accentliners',
+    ...G_ELEC,...G_KITS,
+  ],
+  'Impreza': [
+    ['floorliners',149],['cargotray',129],'seatcoverfront','seatcover',
+    ['splashguards',179],['deflectors',229],['sidemolding',299],'dooredge',['bumpercover',139],'wheellocks',
+    ['cargonet',69],'cargoorganizer','sunshade','remotestart',['crossbars',329],'roofbasket','kayak','paddleboard','ski','bikefork','bikeroof',
+    ...G_PETCAR,
+    ['sillplates',449],'footwell','ledupgrade',
+    ...G_ELEC,...G_KITS,
+  ],
+  'Legacy': [
+    ['floorliners',149],['trunktray',149],'seatcoverfront','seatcover',
+    ['splashguards',179],['deflectors',229],['sidemolding',299],'dooredge','wheellocks',
+    'trunknet','sunshade','remotestart',...G_PETCAR,
+    ['sillplates',449],'footwell','ledupgrade',
+    ...G_ELEC,...G_KITS,
+  ],
+  'WRX': [
+    ['floorliners',149],['trunktray',139],'seatcoverfront',
+    ['splashguards',189],['deflectors',229],'dooredge','wheellocks',
+    'trunknet','sunshade',...G_PETCAR,
+    'footwell','ledupgrade',
+    ...G_ELEC,...G_KITS,
+  ],
+  'BRZ': [
+    ['floorliners',139],['trunktray',99],'dooredge','wheellocks','trunknet','sunshade','petcarrierbed','petharness','petbowl',
+    'footwell','ledupgrade',
+    ...G_ELEC,...G_KITS,
+  ],
+  'Solterra': [
+    ['floorliners',169],'cargotray','seatbackprot','seatcoverfront','seatcover',
+    'splashguards',['deflectors',269],'dooredge','bumpercover','wheellocks',
+    'cargonet','cargoorganizer','sunshade','sunshade2nd',
+    'crossbars','roofbasket','kayak','paddleboard','ski','bikefork','bikeroof',
+    ...G_PET,
+    'footwell','ledupgrade',
+    'usbcables',...G_KITS,
+  ],
+  'Trailseeker': [
+    ['floorliners',169],'cargotray','seatbackprot','seatcoverfront','seatcover',
+    'dooredge','bumpercover','wheellocks','cargonet','cargoorganizer','sunshade','sunshade2nd',
+    'crossbars','roofbasket','kayak','paddleboard','ski','bikefork','bikeroof',
+    ...G_PET,
+    'usbcables',...G_KITS,
+  ],
+  'Uncharted': [
+    ['floorliners',149],['cargotray',129],'seatcoverfront','seatcover',
+    'dooredge',['bumpercover',139],'wheellocks','cargonet','cargoorganizer','sunshade',
+    ...G_PETCAR,'petliner',
+    'usbcables',...G_KITS,
+  ],
+};
+const MODELS = Object.keys(MODEL_DATA);
+let currentModel = 'Outback';
+try { const sm=localStorage.getItem('subaru-model'); if(sm && MODEL_DATA[sm]) currentModel=sm; } catch(e){}
+
+function buildProducts(model) {
+  const rows = (MODEL_DATA[model]||[]).map(entry=>{
+    const [id, price, ovr] = Array.isArray(entry) ? entry : [entry, undefined, undefined];
+    const base = ACC[id];
+    return Object.assign({ id, category:'subaru' }, base, { price: (price!==undefined?price:base.price) }, ovr||{});
+  });
+  return [
+    ...PROTECTION,
+    ...rows,
+    { id:'other',  category:'other', name:null, desc:null, warranty:null, price:0 },
+    { id:'other2', category:'other', name:null, desc:null, warranty:null, price:0 },
+  ];
+}
+let products = buildProducts(currentModel);
+
+function setModel(m) {
+  if(!MODEL_DATA[m]) return;
+  currentModel = m;
+  try { localStorage.setItem('subaru-model', m); } catch(e){}
+  products = buildProducts(m);
+  const valid = new Set(products.map(p=>p.id));
+  [...selected].forEach(id=>{ if(!valid.has(id)) selected.delete(id); });
+  [0,1,2].forEach(i=>{ bundles[i] = bundles[i].filter(id=>valid.has(id)); });
+  const sel = document.getElementById('f-model');
+  if(sel && sel.value !== m) sel.value = m;
+  saveState(); renderProducts(); updateTotals();
+}
+
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+const selected = new Set();
+let isCash = false;
+const bundles     = {0:[],1:[],2:[]};
+const bundleNames = {0:'Base Camp',1:'Adventure',2:'Summit'};
+
+/* ── WHICH PACKAGE IS "MOST POPULAR" ──────────────────────────────
+   Set this per store: 0 = Base Camp, 1 = Adventure, 2 = Summit.
+   The "Most Popular" badge is locked to this package and the customer
+   never sees a control to change it. ────────────────────────────── */
+const POPULAR_PACKAGE = 1;
+
+const bundleMeta  = {
+  0:{tagline:'',overridePrice:'',recommended:false},
+  1:{tagline:'',overridePrice:'',recommended:false},
+  2:{tagline:'',overridePrice:'',recommended:false}
+};
+let activeFilter = 'all';
+let activePanel  = 'deal';
+const sigState   = {};
+
+function getTax()  { return (parseFloat(document.getElementById('tax-input').value)  || 7.5) / 100; }
+function getTerm() { return parseInt(document.getElementById('term-select').value)   || 60; }
+function getRate() { return parseFloat(document.getElementById('rate-input').value)  || 0; }
+
+function loadState() {
+  try {
+    const b=localStorage.getItem('subaru-bundles'), n=localStorage.getItem('subaru-bundle-names'), m=localStorage.getItem('subaru-bundle-meta');
+    if(b) Object.assign(bundles,JSON.parse(b));
+    if(n) Object.assign(bundleNames,JSON.parse(n));
+    if(m) { const p=JSON.parse(m); [0,1,2].forEach(i=>{ if(p[i]) Object.assign(bundleMeta[i],p[i]); }); }
+  } catch(e){}
+  // Lock the Most Popular badge to the preset package, ignoring any saved flag.
+  [0,1,2].forEach(i=>{ bundleMeta[i].recommended = (i===POPULAR_PACKAGE); });
+}
+function saveState() {
+  try {
+    localStorage.setItem('subaru-bundles',JSON.stringify(bundles));
+    localStorage.setItem('subaru-bundle-names',JSON.stringify(bundleNames));
+    localStorage.setItem('subaru-bundle-meta',JSON.stringify(bundleMeta));
+  } catch(e){}
+}
+
+/* ── Helpers ── */
+function fmt(n) { return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtShort(n) { return '$'+Math.round(n).toLocaleString('en-US'); }
+function calcMonthly(total,months,rate) {
+  if(!rate) return total/months;
+  const r=rate/100/12;
+  return total*r/(1-Math.pow(1+r,-months));
+}
+function getPrice(id) {
+  const el = document.getElementById('price-'+id);
+  return el ? (parseFloat(el.value)||0) : 0;
+}
+function getName(id) {
+  if(id==='other')  return document.getElementById('other-name-input')?.value.trim()||'Custom Item';
+  if(id==='other2') return document.getElementById('other2-name-input')?.value.trim()||'Custom Item 2';
+  return products.find(p=>p.id===id)?.name?.replace(/™|®/g,'')||'';
+}
+function calcBundleSub(idx)   { return bundles[idx].reduce((s,id)=>s+getPrice(id),0); }
+function calcBundlePrice(idx) { const s=calcBundleSub(idx),o=parseFloat(bundleMeta[idx].overridePrice); return(!isNaN(o)&&o>=0&&bundleMeta[idx].overridePrice!=='')?o:s; }
+
+/* ══════════════════════════════════════════
+   TAB NAVIGATION
+══════════════════════════════════════════ */
+function goTo(panelId) {
+  const tabs   = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  const order  = ['deal','products','packages','summary'];
+  const prev   = activePanel;
+  activePanel  = panelId;
+
+  panels.forEach(p => {
+    const pid = p.id.replace('panel-','');
+    if(pid===panelId) { p.classList.remove('exit'); p.classList.add('active'); }
+    else if(pid===prev) { p.classList.remove('active'); p.classList.add('exit'); setTimeout(()=>p.classList.remove('exit'),280); }
+    else { p.classList.remove('active','exit'); }
+  });
+
+  tabs.forEach(t => {
+    const tid = t.dataset.panel;
+    t.classList.toggle('active', tid===panelId);
+    t.classList.toggle('done', order.indexOf(tid) < order.indexOf(panelId));
+  });
+
+  if(panelId==='summary') updateSummary();
+  if(panelId==='packages') renderBundles();
+}
+
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', ()=> goTo(t.dataset.panel));
+});
+
+/* ══════════════════════════════════════════
+   SETTINGS MODAL
+══════════════════════════════════════════ */
+const settingsModal = document.getElementById('settings-modal');
+document.getElementById('settings-btn').addEventListener('click', ()=>settingsModal.classList.toggle('open'));
+document.getElementById('settings-close').addEventListener('click', ()=>settingsModal.classList.remove('open'));
+settingsModal.addEventListener('click', e=>{ if(e.target===settingsModal) settingsModal.classList.remove('open'); });
+
+document.getElementById('cash-toggle').addEventListener('click', function() {
+  isCash = !isCash;
+  this.classList.toggle('active', isCash);
+  document.getElementById('finance-fields').style.opacity = isCash?'0.35':'1';
+  document.getElementById('rate-field').style.opacity     = isCash?'0.35':'1';
+  updateTotals();
+});
+
+['tax-input','rate-input','term-select'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', updateTotals);
+});
+
+/* ══════════════════════════════════════════
+   RENDER PRODUCTS
+══════════════════════════════════════════ */
+function renderProducts() {
+  const mi = document.getElementById('model-indicator');
+  if(mi) mi.textContent = '\u25CF ' + currentModel;
+  const list = document.getElementById('products-list');
+  list.innerHTML = '';
+
+  let currentCat = null;
+  let catSection = null;
+  let catItemsEl = null;
+
+  const catMeta = {
+    protect: { label:'Vehicle Protection', badge:'Protection', cls:'protect-hdr' },
+    subaru: { get label(){ return 'Genuine Subaru Accessories — ' + currentModel; }, badge:'Genuine Subaru', cls:'subaru-hdr' },
+  };
+
+  products.forEach(p => {
+    // Category section header
+    if(p.category !== 'other' && p.category !== currentCat) {
+      currentCat = p.category;
+      const meta = catMeta[p.category]||{};
+      catSection = document.createElement('div');
+      catSection.className = 'cat-section';
+      catSection.dataset.cat = p.category;
+
+      const ch = document.createElement('div');
+      ch.className = `cat-header ${meta.cls||''}`;
+      ch.innerHTML = `<span class="cat-header-label">${meta.label}</span><span class="cat-header-badge">${meta.badge}</span>`;
+      catSection.appendChild(ch);
+
+      catItemsEl = document.createElement('div');
+      catSection.appendChild(catItemsEl);
+      list.appendChild(catSection);
+    }
+
+    if(p.category==='other') {
+      const uid = p.id;
+      const row = document.createElement('div');
+      row.className='custom-row'; row.dataset.productId=uid;
+      row.innerHTML=`
+        <div class="row-check"><div class="row-check-mark">✓</div></div>
+        <div class="row-info" style="flex:1">
+          <input class="custom-name-input" id="${uid}-name-input" type="text" placeholder="Add custom product name…">
+          <input class="custom-desc-input" id="${uid}-desc-input" type="text" placeholder="Description (optional)">
+        </div>
+        <div class="row-pricing">
+          <div class="row-price-wrap"><span class="row-price-sym">$</span><input class="price-input" type="number" id="price-${uid}" value="0" min="0" step="1"></div>
+          <div class="row-price-note">+ tax</div>
+          <div class="tier-pills" data-product-id="${uid}"></div>
+        </div>`;
+      row.addEventListener('click', e=>{
+        if(['price-input','custom-name-input','custom-desc-input'].some(c=>e.target.classList.contains(c))) return;
+        selected.has(uid)?selected.delete(uid):selected.add(uid);
+        row.classList.toggle('selected',selected.has(uid));
+        updateTotals();
+      });
+      row.querySelector('#price-'+uid).addEventListener('input',updateTotals);
+      row.querySelector('#'+uid+'-name-input').addEventListener('input',updateTotals);
+      if(!catItemsEl) {
+        catItemsEl = document.createElement('div');
+        list.appendChild(catItemsEl);
+      }
+      catItemsEl.appendChild(row);
+      return;
+    }
+
+    const row = document.createElement('div');
+    row.className='product-row'; row.dataset.productId=p.id; row.draggable=true;
+    const badgeCls = p.category==='protect'?'protect':'subaru';
+    const badgeTxt = p.category==='protect'?'Protection':'Subaru';
+    const wtCls    = p.category==='protect'?'':'subaru-tag';
+    row.innerHTML=`
+      <div class="row-check"><div class="row-check-mark">✓</div></div>
+      <div class="row-info">
+        <div class="row-badge ${badgeCls}">${badgeTxt}</div>
+        <div class="row-name">${p.name}</div>
+        <button class="row-expand-btn" type="button">Details ▾</button>
+        <div class="row-desc">${p.desc}</div>
+        ${p.warranty?`<div class="row-warranty ${wtCls}">${p.warranty}</div>`:''}
+      </div>
+      <div class="row-pricing">
+        <div class="row-price-wrap"><span class="row-price-sym">$</span><input class="price-input" type="number" id="price-${p.id}" value="${p.price}" min="0" step="1"></div>
+        <div class="row-price-note">+ tax</div>
+        <div class="tier-pills" data-product-id="${p.id}"></div>
+      </div>`;
+
+    const expandBtn = row.querySelector('.row-expand-btn');
+    expandBtn.addEventListener('click', e=>{
+      e.stopPropagation();
+      row.classList.toggle('expanded');
+      expandBtn.textContent = row.classList.contains('expanded')?'Details ▴':'Details ▾';
+    });
+    row.addEventListener('click', e=>{
+      if(e.target.classList.contains('price-input')||e.target.classList.contains('row-expand-btn')) return;
+      selected.has(p.id)?selected.delete(p.id):selected.add(p.id);
+      row.classList.toggle('selected',selected.has(p.id));
+      updateTotals();
+    });
+    row.querySelector('.price-input').addEventListener('input',updateTotals);
+    row.ondragstart=e=>{ e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('itemId',p.id); row.classList.add('dragging'); };
+    row.ondragend=()=>row.classList.remove('dragging');
+    catItemsEl.appendChild(row);
+  });
+
+  renderPills();
+  applyFilter(activeFilter);
+}
+
+/* ── Category filter ── */
+document.getElementById('cat-filter-bar').addEventListener('click', e=>{
+  const btn = e.target.closest('.cat-filter-btn');
+  if(!btn) return;
+  document.querySelectorAll('.cat-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  applyFilter(activeFilter);
+});
+
+function applyFilter(filter) {
+  document.querySelectorAll('.cat-section').forEach(sec=>{
+    const cat = sec.dataset.cat;
+    const show = filter==='all' || filter===cat;
+    sec.style.display = show?'':'none';
+  });
+}
+
+/* ── Tier pills ── */
+function renderPills() {
+  document.querySelectorAll('.tier-pills').forEach(container=>{
+    const pid = container.dataset.productId;
+    container.innerHTML='';
+    [0,1,2].forEach(idx=>{
+      const pill = document.createElement('button');
+      pill.type='button';
+      pill.className='tier-pill'+(bundles[idx].includes(pid)?' active':'');
+      pill.textContent=(bundleNames[idx]||'').trim().slice(0,3).toUpperCase();
+      pill.title='Add to '+bundleNames[idx];
+      pill.onclick=e=>{ e.stopPropagation(); e.preventDefault(); toggleBundle(pid,idx); };
+      pill.onmousedown=e=>e.stopPropagation();
+      container.appendChild(pill);
+    });
+  });
+}
+
+function toggleBundle(id,idx) {
+  const pos=bundles[idx].indexOf(id);
+  if(pos>=0) bundles[idx].splice(pos,1); else bundles[idx].push(id);
+  saveState(); updateTotals();
+}
+
+/* ══════════════════════════════════════════
+   UPDATE TOTALS
+══════════════════════════════════════════ */
+function updateTotals() {
+  const TAX   = getTax();
+  const term  = getTerm();
+  const rate  = getRate();
+  let sub = 0;
+  selected.forEach(id=>sub+=getPrice(id));
+  const tax   = sub*TAX;
+  const total = sub+tax;
+  const mo    = (!isCash&&selected.size>0) ? calcMonthly(total,term,rate) : 0;
+
+  // Header
+  const hdEl = document.getElementById('header-total');
+  hdEl.textContent = fmtShort(sub);
+  hdEl.classList.toggle('has-items', sub>0);
+
+  // Footer selection info
+  const selInfo = document.getElementById('footer-sel-info');
+  if(selected.size===0) { selInfo.innerHTML='No items selected'; }
+  else { selInfo.innerHTML=`<span>${selected.size}</span> item${selected.size>1?'s':''} · <span>${fmtShort(sub)}</span>`; }
+
+  // Summary tax label
+  document.getElementById('s-tax-pct').textContent=(TAX*100).toFixed(1).replace(/\.0$/,'');
+
+  renderPills();
+  if(activePanel==='packages') renderBundles();
+  if(activePanel==='summary')  updateSummary();
+}
+
+/* ══════════════════════════════════════════
+   SUMMARY PANEL
+══════════════════════════════════════════ */
+function updateSummary() {
+  // Deal fields
+  const fv = id=>document.getElementById(id)?.value||'—';
+  document.getElementById('s-customer').textContent = fv('f-customer')||'—';
+  const yr = fv('f-year'), model = document.getElementById('f-model')?.value||'';
+  document.getElementById('s-vehicle').textContent  = [yr,model].filter(Boolean).join(' ')||'—';
+  document.getElementById('s-stock').textContent    = fv('f-stock')||'—';
+  document.getElementById('s-vin').textContent      = fv('f-vin')||'—';
+  const d = document.getElementById('f-date')?.value;
+  document.getElementById('s-date').textContent     = d ? new Date(d+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+
+  // Items list
+  const list = document.getElementById('sum-items-list');
+  list.innerHTML='';
+  if(selected.size===0) {
+    list.innerHTML='<div class="sum-empty">No items selected — go to Products to add items.</div>';
+  } else {
+    selected.forEach(id=>{
+      const p   = products.find(x=>x.id===id);
+      const row = document.createElement('div');
+      row.className='sum-item-row';
+      const cat = p?.category==='protect'?'Protection':'Subaru';
+      const badgeLabel = p?.category==='other'?'Custom':(p?.category==='protect'?'Protection':'Genuine Subaru');
+      row.innerHTML=`
+        <div>
+          <div class="sum-item-name">${getName(id)}</div>
+          <span class="sum-item-badge">${badgeLabel}</span>
+        </div>
+        <div class="sum-item-price">${fmt(getPrice(id))}</div>`;
+      list.appendChild(row);
+    });
+  }
+
+  // Totals
+  let sub=0; selected.forEach(id=>sub+=getPrice(id));
+  const TAX=getTax(), tax=sub*TAX, total=sub+tax;
+  const mo=(!isCash&&selected.size>0)?calcMonthly(total,getTerm(),getRate()):0;
+  document.getElementById('s-subtotal').textContent = fmt(sub);
+  document.getElementById('s-tax').textContent      = fmt(tax);
+  document.getElementById('s-total').textContent    = fmt(total);
+  const moRow = document.getElementById('s-monthly-row');
+  if(isCash||selected.size===0) { moRow.style.display='none'; }
+  else { moRow.style.display='flex'; document.getElementById('s-monthly').textContent=`${fmt(mo).replace('.00','')}/mo`; }
+}
+
+/* ══════════════════════════════════════════
+   BUNDLE BUILDER
+══════════════════════════════════════════ */
+function renderBundles() {
+  const grid  = document.getElementById('packages-grid');
+  const tbar  = document.getElementById('bundle-totals-bar');
+  grid.innerHTML=''; tbar.innerHTML='';
+  const TAX=getTax(), term=getTerm(), rate=getRate();
+
+  const dropOnto=(idx,e)=>{
+    const id=e.dataTransfer.getData('itemId');
+    if(!id) return;
+    if(!bundles[idx].includes(id)) bundles[idx].push(id);
+    saveState(); updateTotals();
+  };
+
+  [0,1,2].forEach(idx=>{
+    const meta=bundleMeta[idx];
+    const col=document.createElement('div');
+    col.className='bundle-col'+(meta.recommended?' recommended':'');
+    col.ondragover=e=>{e.preventDefault();col.classList.add('drag-over');};
+    col.ondragleave=()=>col.classList.remove('drag-over');
+    col.ondrop=e=>{e.preventDefault();col.classList.remove('drag-over');dropOnto(idx,e);};
+
+    // Head
+    const head=document.createElement('div'); head.className='bundle-head';
+    const nameText=document.createElement('div'); nameText.className='bundle-name-text'; nameText.textContent=bundleNames[idx];
+    nameText.onclick=e=>{e.stopPropagation(); const inp=document.createElement('input'); inp.className='bundle-name-input'; inp.type='text'; inp.value=bundleNames[idx]; nameText.replaceWith(inp); inp.focus(); inp.select(); const save=()=>{ bundleNames[idx]=inp.value||bundleNames[idx]; saveState(); inp.replaceWith(nameText); nameText.textContent=bundleNames[idx]; renderPills(); }; inp.onblur=save; inp.onkeypress=ev=>{if(ev.key==='Enter')save();}; };
+    const clrBtn=document.createElement('button'); clrBtn.className='bundle-clear'; clrBtn.textContent='Clear';
+    clrBtn.onclick=e=>{e.stopPropagation();bundles[idx]=[];bundleMeta[idx].overridePrice='';bundleMeta[idx].tagline='';saveState();updateTotals();};
+    head.appendChild(nameText); head.appendChild(clrBtn); col.appendChild(head);
+
+    // Tagline
+    const tl=document.createElement('input'); tl.type='text'; tl.className='bundle-tagline';
+    tl.value=meta.tagline||''; tl.placeholder='Add tagline…';
+    tl.oninput=()=>{bundleMeta[idx].tagline=tl.value;saveState();};
+    col.appendChild(tl);
+
+    // Items area
+    const area=document.createElement('div'); area.className='bundle-items-area';
+    bundles[idx].forEach(itemId=>{
+      const item=document.createElement('div'); item.className='bundle-item'; item.draggable=true;
+      const nm=document.createElement('div'); nm.className='bundle-item-name'; nm.textContent=getName(itemId);
+      const pr=document.createElement('div'); pr.className='bundle-item-price'; pr.textContent=fmt(getPrice(itemId));
+      const rm=document.createElement('button'); rm.type='button'; rm.className='bundle-item-rm'; rm.innerHTML='&times;';
+      rm.onclick=e=>{e.stopPropagation();bundles[idx]=bundles[idx].filter(id=>id!==itemId);saveState();updateTotals();};
+      rm.onmousedown=e=>e.stopPropagation();
+      item.appendChild(nm); item.appendChild(pr); item.appendChild(rm);
+      item.ondragstart=e=>{e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('itemId',itemId);item.classList.add('dragging');};
+      item.ondragend=()=>item.classList.remove('dragging');
+      area.appendChild(item);
+    });
+    if(bundles[idx].length===0) {
+      const hint=document.createElement('div'); hint.className='bundle-drop-hint'; hint.textContent='Use tier chips on products or drag here';
+      hint.ondragover=e=>{e.preventDefault();hint.classList.add('drag-active');};
+      hint.ondragleave=()=>hint.classList.remove('drag-active');
+      hint.ondrop=e=>{e.preventDefault();e.stopPropagation();hint.classList.remove('drag-active');dropOnto(idx,e);};
+      area.appendChild(hint);
+    }
+    col.appendChild(area);
+
+    // Footer
+    const foot=document.createElement('div'); foot.className='bundle-foot';
+    const sub=calcBundleSub(idx), fp=calcBundlePrice(idx), sav=sub-fp;
+    const ovrRow=document.createElement('div'); ovrRow.className='bundle-ovr-row';
+    ovrRow.appendChild(document.createTextNode('Pkg price $'));
+    const ovrInp=document.createElement('input'); ovrInp.type='number'; ovrInp.className='bundle-ovr-input'; ovrInp.min='0'; ovrInp.step='1'; ovrInp.value=meta.overridePrice; ovrInp.placeholder=sub>0?Math.round(sub):'0';
+    ovrInp.oninput=()=>{bundleMeta[idx].overridePrice=ovrInp.value;saveState();updateTotals();};
+    /* "Mark popular" toggle intentionally hidden from this view — the Most Popular
+       badge is fixed via POPULAR_PACKAGE below so it never looks customer-selectable. */
+    ovrRow.appendChild(ovrInp); foot.appendChild(ovrRow);
+
+    const sumRows=document.createElement('div'); sumRows.className='bundle-summary-rows';
+    if(bundles[idx].length===0) {
+      sumRows.innerHTML='<div class="bundle-empty-note">Add items to see pricing</div>';
+    } else {
+      const r1=document.createElement('div'); r1.className='bsum-row'; r1.innerHTML=`<span>Items</span><span>${fmt(sub)}</span>`; sumRows.appendChild(r1);
+      if(sav>0.005) { const r2=document.createElement('div'); r2.className='bsum-row savings'; r2.innerHTML=`<span>Savings</span><span>−${fmt(sav)}</span>`; sumRows.appendChild(r2); }
+      const r3=document.createElement('div'); r3.className='bsum-row total-line'; r3.innerHTML=`<span>Package</span><span>${fmt(fp)}</span>`; sumRows.appendChild(r3);
+      if(fp>0&&!isCash) { const mo=calcMonthly(fp*(1+TAX),term,rate); const r4=document.createElement('div'); r4.className='bsum-row monthly-line'; r4.innerHTML=`<span>Monthly est.</span><span>+${fmt(mo).replace('.00','')}/mo</span>`; sumRows.appendChild(r4); }
+    }
+    foot.appendChild(sumRows); col.appendChild(foot);
+    grid.appendChild(col);
+  });
+
+  // Totals bar
+  [0,1,2].forEach(idx=>{
+    const cell=document.createElement('div'); cell.className='btotal-cell'+(bundleMeta[idx].recommended?' recommended':'');
+    const fp=calcBundlePrice(idx), sub=calcBundleSub(idx), sav=sub-fp;
+    cell.innerHTML=`<div class="btotal-name">${bundleNames[idx]}</div><div class="btotal-price">${fmt(fp)}</div>${sav>0.005?`<div class="btotal-savings">save ${fmtShort(sav)}</div>`:''}`;
+    tbar.appendChild(cell);
+  });
+
+  renderPills();
+}
+
+/* ══════════════════════════════════════════
+   SIGNATURE PADS
+══════════════════════════════════════════ */
+function initSigPad(canvasId,placeholderId) {
+  const canvas=document.getElementById(canvasId);
+  const ph=document.getElementById(placeholderId);
+  const cont=canvas.parentElement;
+  let drawing=false;
+  sigState[canvasId]={hasSig:false};
+  function resize() {
+    const dpr=window.devicePixelRatio||1,w=cont.clientWidth||300;
+    canvas.width=w*dpr; canvas.height=90*dpr;
+    canvas.style.width=w+'px'; canvas.style.height='90px';
+    const ctx=canvas.getContext('2d');
+    ctx.scale(dpr,dpr);
+    ctx.strokeStyle='#0b1524'; ctx.lineWidth=1.7; ctx.lineCap='round'; ctx.lineJoin='round';
+  }
+  function pos(e) { const r=canvas.getBoundingClientRect(),s=e.touches?e.touches[0]:e; return{x:s.clientX-r.left,y:s.clientY-r.top}; }
+  canvas.addEventListener('mousedown',  e=>{e.preventDefault();drawing=true;const p=pos(e);canvas.getContext('2d').beginPath();canvas.getContext('2d').moveTo(p.x,p.y);});
+  canvas.addEventListener('mousemove',  e=>{if(!drawing)return;const ctx=canvas.getContext('2d'),p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();ctx.beginPath();ctx.moveTo(p.x,p.y);if(!sigState[canvasId].hasSig){sigState[canvasId].hasSig=true;ph.style.display='none';}});
+  canvas.addEventListener('mouseup',    ()=>drawing=false);
+  canvas.addEventListener('mouseleave', ()=>drawing=false);
+  canvas.addEventListener('touchstart', e=>{e.preventDefault();drawing=true;const p=pos(e);canvas.getContext('2d').beginPath();canvas.getContext('2d').moveTo(p.x,p.y);},{passive:false});
+  canvas.addEventListener('touchmove',  e=>{if(!drawing)return;e.preventDefault();const ctx=canvas.getContext('2d'),p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();ctx.beginPath();ctx.moveTo(p.x,p.y);if(!sigState[canvasId].hasSig){sigState[canvasId].hasSig=true;ph.style.display='none';}},{passive:false});
+  canvas.addEventListener('touchend',   ()=>drawing=false);
+  resize();
+}
+function clearSig(canvasId,placeholderId) {
+  const canvas=document.getElementById(canvasId);
+  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+  document.getElementById(placeholderId).style.display='block';
+  if(sigState[canvasId]) sigState[canvasId].hasSig=false;
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+(function initModelSelect(){
+  const sel = document.getElementById('f-model');
+  sel.innerHTML = MODELS.map(m=>`<option${m===currentModel?' selected':''}>${m}</option>`).join('');
+  sel.addEventListener('change', e=>setModel(e.target.value));
+})();
+document.getElementById('f-date').valueAsDate = new Date();
+loadState();
+renderProducts();
+updateTotals();
+window.addEventListener('load', ()=>{
+  initSigPad('sig-customer','ph-customer');
+  initSigPad('sig-associate','ph-associate');
+});
+</script>
+</body>
+</html>
